@@ -1,4 +1,3 @@
-import { signOut } from "next-auth/react";
 import EmptyState from '../components/EmptyState';
 
 const Users = () => {
@@ -6,7 +5,8 @@ const Users = () => {
     <div className="
       hidden
       lg:block
-      lg:pl-80
+      lg:pl-64
+      bg-gray-100
       h-full
     ">
       <EmptyState />

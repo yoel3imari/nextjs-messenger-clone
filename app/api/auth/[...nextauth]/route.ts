@@ -1,19 +1,15 @@
 import bcrypt from "bcrypt";
 import NextAuth, { AuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
 
+import CredentialsProvider from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-
 import prisma from "@/app/libs/prismadb";
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
-  pages: {
-    signIn: "/",
-  },
   providers: [
     GithubProvider({
       clientId: process.env.GITHUB_ID as string,
@@ -40,7 +36,7 @@ const handler = NextAuth({
         });
 
         if (!user || !user.hashedPassword) {
-          throw new Error("Invalid Credentials");
+          throw new Error("User not found, maybe use another provider!");
         }
 
         const isCorrect = await bcrypt.compare(
@@ -61,8 +57,8 @@ const handler = NextAuth({
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+}
 
-// const handler = NextAuth(authOptions);
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
