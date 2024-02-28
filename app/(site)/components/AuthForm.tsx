@@ -82,7 +82,6 @@ const AuthForm = () => {
       setIsLoading(true);
       // nextauth social signin
       signIn(action, {
-        redirect: false,
         callbackUrl: "/",
       })
         .then((callback) => {

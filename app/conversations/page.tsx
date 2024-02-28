@@ -5,7 +5,7 @@ import EmptyState from "../components/EmptyState";
 import useConversation from "../hooks/useConversation";
 
 const Home = () => {
-  const [isOpen] = useConversation();
+  const { isOpen } = useConversation();
 
   return (
     <div
