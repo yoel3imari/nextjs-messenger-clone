@@ -13,6 +13,8 @@ import { useRouter } from "next/navigation";
 
 type Variant = "LOGIN" | "REGISTER";
 
+const onSuccessRedirect = "/conversations"
+
 const AuthForm = () => {
   const session = useSession();
   const router = useRouter();
@@ -21,7 +23,7 @@ const AuthForm = () => {
 
   useEffect(() => {
     if (session.status === "authenticated") {
-      router.push("/users");
+      router.push(onSuccessRedirect);
     }
   }, [session.status]);
 
@@ -53,7 +55,7 @@ const AuthForm = () => {
           if (callback?.error) toast.error(callback.error);
           if (callback?.ok) {
             toast.success("Logged in!");
-            router.push("/users");
+            router.push(onSuccessRedirect);
           }
         })
         .catch((error) => {
@@ -67,7 +69,7 @@ const AuthForm = () => {
         .post("/api/register", data)
         .then(() => {
           toast.success("Logged in!");
-          router.push("/users");
+          router.push(onSuccessRedirect);
         })
         .catch((error) => {
           toast.error("Something went wrong!");
@@ -88,7 +90,7 @@ const AuthForm = () => {
           if (callback?.error) toast.error(callback.error);
           if (callback?.ok) {
             toast.success("Signed in!");
-            router.push("/users");
+            router.push(onSuccessRedirect);
           }
         })
         .finally(() => setIsLoading(false));
