@@ -22,8 +22,8 @@ export async function POST (
         id: user.id
       },
       data: {
-        image,
-        name
+        image: image,
+        name: name
       }
     });
 

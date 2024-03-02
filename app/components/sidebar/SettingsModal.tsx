@@ -34,6 +34,7 @@ const SettingsModal: React.FC<ModalProps & { user: User }> = ({
   });
   const image = watch("image");
   const handleUpload = (result: any) => {
+    console.log(result);
     setValue("image", result?.info?.secure_url, {
       shouldValidate: true,
     });
@@ -94,11 +95,11 @@ const SettingsModal: React.FC<ModalProps & { user: User }> = ({
                   />
                   <CldUploadButton
                     options={{ maxFiles: 1 }}
-                    onUploadAdded={handleUpload}
+                    onSuccess={handleUpload}
                     uploadPreset="ml_default"
                   >
                     <Button disabled={isLoading} type="button">
-                      Changer
+                      <span>Changer</span>
                     </Button>
                   </CldUploadButton>
                 </div>
