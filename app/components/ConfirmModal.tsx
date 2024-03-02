@@ -50,16 +50,16 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="border-b border-gray-300">
         <div className="flex">
-          <div>
+          {icon && (
             <div
               className={clsx(
                 "rounded-full p-3 flex items-center justify-center",
                 modalIconStyle[type || "success"]
               )}
             >
-              {icon || <IoMdInformationCircleOutline size={24} />}
+              {icon}
             </div>
-          </div>
+          )}
           <div className="flex-1 break-all">{children}</div>
         </div>
       </div>
@@ -69,7 +69,7 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           onClick={onClose}
           className="
           bg-white hover:bg-gray-300
-            py-3 px-4 
+            py-2 px-4 
             flex items-center justify-center
             rounded-lg
             text-gray-700
@@ -80,9 +80,10 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
         <button
           type="button"
           onClick={handleConfirm}
+          disabled={isLoading}
           className={clsx(`
             hover:text-white
-            py-3 px-4 
+            py-2 px-4 
             flex items-center justify-center
             rounded-lg
             ${modalTypeStyle[type || "success"]}
