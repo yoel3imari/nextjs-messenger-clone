@@ -5,7 +5,8 @@ import { FullMessageType } from "@/app/types";
 import { useEffect, useRef, useState } from "react";
 import MessageBox from "./MessageBox";
 import axios from "axios";
-import getCurrentUser from "@/app/actions/getCurrentUser";
+import { pusherClient } from "@/app/libs/pusher";
+import { find } from "lodash";
 
 interface ConversationBodyProps {
   initMessages: FullMessageType[];
@@ -14,17 +15,32 @@ interface ConversationBodyProps {
 const ConversationBody: React.FC<ConversationBodyProps> = ({
   initMessages,
 }) => {
-
-  const [messages, setMessages] = useState(initMessages)
-  const bottomRef = useRef<HTMLDivElement>(null)
-  const {conversationId} = useConversation()
+  const [messages, setMessages] = useState(initMessages);
+  const bottomRef = useRef<HTMLDivElement>(null);
+  const { conversationId } = useConversation();
 
   useEffect(() => {
-    
-    axios.post(`/api/conversations/${conversationId}/seen`)
-  
-  }, [conversationId])
-  
+    axios.post(`/api/conversations/${conversationId}/seen`);
+  }, [conversationId]);
+
+  useEffect(() => {
+    pusherClient.subscribe(conversationId);
+    bottomRef?.current?.scrollIntoView();
+
+    const messageHandler = (message: FullMessageType) => {
+      axios.post(`/api/conversations/${conversationId}/seen`);
+      setMessages((current) => {
+        if (find(current, { id: message.id })) {
+          return current;
+        }
+        return [...current, message];
+      });
+      bottomRef?.current?.scrollIntoView();
+    };
+
+
+    pusherClient.bind("messages:new", messageHandler);
+  }, [conversationId]);
 
   return (
     <div
@@ -33,15 +49,9 @@ const ConversationBody: React.FC<ConversationBodyProps> = ({
         overflow-y-auto
       "
     >
-      {
-        messages.map((m, i) => (
-          <MessageBox
-            isLast={i === messages.length - 1}
-            key={m.id}
-            data={m}
-          />
-        ))
-      }
+      {messages.map((m, i) => (
+        <MessageBox isLast={i === messages.length - 1} key={m.id} data={m} />
+      ))}
       <div className="pt-24" ref={bottomRef}></div>
     </div>
   );
