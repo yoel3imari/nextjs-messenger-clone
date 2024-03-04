@@ -2,6 +2,7 @@
 
 import Avatar from "@/app/components/Avatar";
 import ConfirmModal from "@/app/components/ConfirmModal";
+import GroupAvatar from "@/app/components/GroupAvatar";
 import useConversation from "@/app/hooks/useConversation";
 import useOtherUser from "@/app/hooks/useOtherUser";
 import { Dialog, Transition } from "@headlessui/react";
@@ -66,7 +67,10 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
       >
         <div className="bg-white px-4 pb-4">
           <h2 className="font-bold text-lg">Confirm Action</h2>
-          <p className="">Do you want to delete this contact ?erffffffffffffdrddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</p>
+          <p className="">
+            Do you want to delete this contact
+            ?erffffffffffffdrddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+          </p>
         </div>
       </ConfirmModal>
       <Transition.Root show={isOpen} as={Fragment}>
@@ -156,7 +160,11 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                       <div className="relative mt-6 flex-1 px-4 sm:px-6">
                         <div className="flex flex-col items-center">
                           <div className="mb-2">
-                            <Avatar user={otherUser} size={100} />
+                            {data.isGroup ? (
+                              <GroupAvatar users={data.users} />
+                            ) : (
+                              <Avatar user={otherUser} size={100} />
+                            )}
                           </div>
                           <div className="">{title}</div>
                           <div

@@ -68,7 +68,7 @@ const AuthForm = () => {
       axios
         .post("/api/register", data)
         .then(() => {
-          toast.success("Logged in!");
+          toast.success("Account created!");
           router.push(onSuccessRedirect);
         })
         .catch((error) => {
