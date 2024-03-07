@@ -2,9 +2,15 @@
 
 import useRoutes from "@/app/hooks/useRoutes";
 import MobileItem from "./MobileItem";
+import useConversation from "@/app/hooks/useConversation";
 
 export default function MobileFooter() {
   const routes = useRoutes();
+  const { isOpen } = useConversation();
+
+  if (isOpen) {
+    return null;
+  }
 
   return (
     <div

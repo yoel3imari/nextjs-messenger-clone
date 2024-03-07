@@ -2,7 +2,9 @@
 
 import { User } from "@prisma/client";
 import clsx from "clsx";
+import useActiveList from "../hooks/useActiveList";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 interface AvatarProps {
   user?: User;
@@ -10,37 +12,56 @@ interface AvatarProps {
 }
 
 const Avatar: React.FC<AvatarProps> = ({ user, size }) => {
+  const { members } = useActiveList();
+  const isActive = members.indexOf(user?.email!) !== -1;
+  const session = useSession();
+  // const currentUser = await getCurrentUser();
+  const isCurrent = user?.email === session.data?.user?.email;
+
   return (
-    <div className="relative  flex items-center">
+    <div className="relative flex items-center">
       <div
         className={clsx(
           `
           relative
           inline-block
-          rounded-full
           overflow-hidden
           p-[2px]
-          border-2
+          rounded-full
           shadow-sm`,
           !size && "h-8 w-8 md:h-11 md:w-11"
         )}
         style={{
-          backgroundImage: `url(${user?.image || "/images/placeholder.png"})`,
-          backgroundSize: "cover",
           width: size ? size : "",
           height: size ? size : "",
         }}
       >
-        {/* <Image
+        <Image
+          alt="avatar"
           src={user?.image || "/images/placeholder.png"}
+          className="rounded-full w-full h-full"
           fill
-          className="
-            rounded-circle
-            w-8
-            h-8
-          "
-          alt={user?.name as string}
-        /> */}
+          layout="fill"
+          objectFit="contain"
+        />
+      </div>
+      <div>
+        {isActive && !isCurrent && (
+          <span
+            className="
+              absolute
+              block
+              rounded-full
+              bg-green-500
+              ring-2
+              ring-white
+              top-0
+              right-0
+              h-2
+              w-2
+            "
+          />
+        )}
       </div>
     </div>
   );

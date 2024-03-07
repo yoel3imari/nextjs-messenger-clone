@@ -10,10 +10,12 @@ import { find } from "lodash";
 
 interface ConversationBodyProps {
   initMessages: FullMessageType[];
+  isGroup: boolean;
 }
 
 const ConversationBody: React.FC<ConversationBodyProps> = ({
   initMessages,
+  isGroup
 }) => {
   const [messages, setMessages] = useState(initMessages);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -38,8 +40,19 @@ const ConversationBody: React.FC<ConversationBodyProps> = ({
       bottomRef?.current?.scrollIntoView();
     };
 
+    const updateMessageHandler = (newMessage: FullMessageType) => {
+      setMessages((current) =>
+        current.map((currentMessage) => {
+          if (currentMessage.id === newMessage.id) {
+            return newMessage;
+          }
+          return currentMessage;
+        })
+      );
+    };
 
     pusherClient.bind("messages:new", messageHandler);
+    pusherClient.bind("message:update", updateMessageHandler);
   }, [conversationId]);
 
   return (
@@ -50,7 +63,7 @@ const ConversationBody: React.FC<ConversationBodyProps> = ({
       "
     >
       {messages.map((m, i) => (
-        <MessageBox isLast={i === messages.length - 1} key={m.id} data={m} />
+        <MessageBox isLast={i === messages.length - 1} isGroup={isGroup} key={m.id} data={m} />
       ))}
       <div className="pt-24" ref={bottomRef}></div>
     </div>

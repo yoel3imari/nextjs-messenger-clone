@@ -28,8 +28,8 @@ const SettingsModal: React.FC<ModalProps & { user: User }> = ({
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: user.name,
-      image: user.image,
+      name: user?.name,
+      image: user?.image,
     },
   });
   const image = watch("image");
@@ -90,7 +90,7 @@ const SettingsModal: React.FC<ModalProps & { user: User }> = ({
                     width={64}
                     height={64}
                     className="rounded-full"
-                    src={image || user.image || "/images/placeholder.png"}
+                    src={image || user?.image || "/images/placeholder.png"}
                     alt="avatar"
                   />
                   <CldUploadButton

@@ -8,6 +8,8 @@ import { useMemo, useState } from "react";
 import { HiChevronLeft } from "react-icons/hi";
 import { HiEllipsisHorizontal } from "react-icons/hi2";
 import ProfileDrawer from "./ProfileDrawer";
+import useActiveList from "@/app/hooks/useActiveList";
+import clsx from "clsx";
 
 interface ConversationHeaderProps {
   conversation: Conversation & {
@@ -20,11 +22,14 @@ const ConversationHeader: React.FC<ConversationHeaderProps> = ({
 }) => {
   const otherUser = useOtherUser(conversation);
   const [drawer, setDrawer] = useState(false);
+  const {members} = useActiveList()
+  const isActive = members.indexOf(otherUser.email) !== -1
+
   const statusTxt = useMemo(() => {
     if (conversation.isGroup) {
       return `${conversation.users.length} members`;
     }
-    return "active";
+    return isActive ? "active" : "offline";
   }, [conversation]);
 
   return (
@@ -65,7 +70,7 @@ const ConversationHeader: React.FC<ConversationHeaderProps> = ({
           >
             <HiChevronLeft size={32} />
           </Link>
-          <Avatar user={otherUser} />
+          <Avatar user={otherUser}/>
           <div
             className="
             flex flex-col
@@ -73,12 +78,12 @@ const ConversationHeader: React.FC<ConversationHeaderProps> = ({
           >
             <div>{conversation.name || otherUser.name}</div>
             <div
-              className="
-              text-sm
-              font-semibold
-              lowercase
-              text-green-600       
-            "
+              className={clsx(`
+                text-xs
+                font-semibold
+                lowercase`,
+                isActive ? "text-green-500" : "text-gray-300"
+              )}
             >
               {statusTxt}
             </div>

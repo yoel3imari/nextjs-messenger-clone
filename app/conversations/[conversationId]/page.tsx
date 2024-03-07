@@ -44,7 +44,7 @@ const ConversationId = async ({ params }: { params: IParams }) => {
         flex-col
       ">
         <ConversationHeader conversation={conversation} />
-        <ConversationBody initMessages={messages} />
+        <ConversationBody initMessages={messages} isGroup={conversation.isGroup || false} />
         <MessageForm />
       </div>
     </div>

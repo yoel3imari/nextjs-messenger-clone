@@ -1,4 +1,5 @@
 // "use client";
+import { useRouter } from "next/navigation";
 import DesktopSidebar from "./DesktopSidebar";
 import MobileFooter from "./MobileFooter";
 import getCurrentUser from "@/app/actions/getCurrentUser";

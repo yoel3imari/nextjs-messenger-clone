@@ -2,12 +2,15 @@
 
 import { User } from "@prisma/client";
 import UserBox from "./UserBox";
+import getCurrentUser from "@/app/actions/getCurrentUser";
+import getSession from "@/app/actions/getSession";
 
 interface UsersListProps {
   data: User[];
 }
 
 const UsersList: React.FC<UsersListProps> = ({ data }) => {
+
   return <aside 
     className="
       fixed 

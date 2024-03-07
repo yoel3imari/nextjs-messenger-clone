@@ -17,15 +17,19 @@ const UserBox: React.FC<UserBoxProps> = ({ user }) => {
 
   const handelClick = useCallback(() => {
     setIsLoading(true);
-    axios.post("/api/conversations", {
-      userId: user.id,
-    }).then((data) => {
-      router.push(`/conversations/${data.data.id}`)
-    }).finally(() => setIsLoading(false))
+    axios
+      .post("/api/conversations", {
+        userId: user.id,
+      })
+      .then((data) => {
+        router.push(`/conversations/${data.data.id}`);
+      })
+      .finally(() => setIsLoading(false));
   }, [user, router]);
 
-  return <div
-    className="
+  return (
+    <div
+      className="
       w-full
       relative
       flex
@@ -38,30 +42,33 @@ const UserBox: React.FC<UserBoxProps> = ({ user }) => {
       transition
       cursor-pointer
     "
-    onClick={handelClick}
-  >
-    <Avatar user={user} />
-    <div className="min-w-0 flex-1">
-      <div className="focus:outline-none">
-        <div className="
+      onClick={handelClick}
+    >
+      <Avatar user={user} />
+      <div className="min-w-0 flex-1">
+        <div className="focus:outline-none">
+          <div
+            className="
           flex
           justify-between
           items-center
           mb-1
-        ">
-          <p
-            className="
+        "
+          >
+            <p
+              className="
               text-sm
               font-medium
               text-gray-900
             "
-          >
-            {user.name}
-          </p>
+            >
+              {user.name}
+            </p>
+          </div>
         </div>
       </div>
     </div>
-  </div>;
+  );
 };
 
 export default UserBox;
