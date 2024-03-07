@@ -25,7 +25,7 @@ const AuthForm = () => {
     if (session.status === "authenticated") {
       router.push(onSuccessRedirect);
     }
-  }, [session.status]);
+  }, [session.status, router]);
 
   const toggleVariant = useCallback(() => {
     variant === "LOGIN" ? setVariant("REGISTER") : setVariant("LOGIN");
