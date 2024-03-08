@@ -30,7 +30,7 @@ const ConversationHeader: React.FC<ConversationHeaderProps> = ({
       return `${conversation.users.length} members`;
     }
     return isActive ? "active" : "offline";
-  }, [conversation.isGroup, isActive]);
+  }, [conversation.isGroup, conversation.users.length, isActive]);
 
   return (
     <>

@@ -51,7 +51,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
     }
 
     return isActive ? "active" : "offline";
-  }, [data.isGroup, data.users]);
+  }, [data.isGroup, data.users, isActive]);
 
   const onDelete = useCallback(async () => {
     await axios.delete(`/api/conversations/${conversationId}`);

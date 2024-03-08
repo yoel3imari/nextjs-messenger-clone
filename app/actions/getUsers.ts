@@ -1,6 +1,5 @@
 import prisma from "@/app/libs/prismadb";
 import getSession from "./getSession";
-import { PiExportBold } from "react-icons/pi";
 
 const getUsers = async () => {
   const session = await getSession();
