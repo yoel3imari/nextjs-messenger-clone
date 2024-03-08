@@ -42,13 +42,13 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
     if (!lastMessage) return false;
     const seenArray = lastMessage.seen || [];
     return seenArray.filter((user) => user.email === userEmail).length !== 0;
-  }, []);
+  }, [userEmail, lastMessage]);
 
   const lastMsgTxt = useMemo(() => {
     if (lastMessage?.image) return "sent an image";
     if (lastMessage?.body) return lastMessage.body;
     return "Started a conversation";
-  }, []);
+  }, [lastMessage]);
 
   return (
     <div

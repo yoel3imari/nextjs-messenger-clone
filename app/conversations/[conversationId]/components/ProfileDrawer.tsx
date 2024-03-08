@@ -3,11 +3,13 @@
 import Avatar from "@/app/components/Avatar";
 import ConfirmModal from "@/app/components/ConfirmModal";
 import GroupAvatar from "@/app/components/GroupAvatar";
+import useActiveList from "@/app/hooks/useActiveList";
 import useConversation from "@/app/hooks/useConversation";
 import useOtherUser from "@/app/hooks/useOtherUser";
 import { Dialog, Transition } from "@headlessui/react";
 import { Conversation, User } from "@prisma/client";
 import axios from "axios";
+import clsx from "clsx";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 import { Fragment, useCallback, useMemo, useState } from "react";
@@ -32,6 +34,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
   const router = useRouter();
   const { conversationId } = useConversation();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { members } = useActiveList();
+  const isActive = members.indexOf(otherUser.email) !== -1;
 
   const joined = useMemo(() => {
     return format(new Date(otherUser.createdAt), "PP");
@@ -46,15 +50,15 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
       return `${data.users.length} members`;
     }
 
-    return "active";
-  }, [data.users]);
+    return isActive ? "active" : "offline";
+  }, [data.isGroup, data.users]);
 
   const onDelete = useCallback(async () => {
     await axios.delete(`/api/conversations/${conversationId}`);
     setIsModalOpen(false);
     router.push("/conversations");
     router.refresh();
-  }, []);
+  }, [conversationId, router]);
 
   return (
     <>
@@ -69,7 +73,6 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
           <h2 className="font-bold text-lg">Confirm Action</h2>
           <p className="">
             Do you want to delete this contact
-            ?erffffffffffffdrddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
           </p>
         </div>
       </ConfirmModal>
@@ -168,9 +171,10 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                           </div>
                           <div className="">{title}</div>
                           <div
-                            className="
-                              text-sm text-gray-500
-                            "
+                            className={clsx(
+                              `text-sm text-gray-500`,
+                              isActive ? "text-green-500" : "text-gray-300"
+                            )}
                           >
                             {statusTxt}
                           </div>
